@@ -6,6 +6,7 @@ import com.example.demo.democs.exception.NotFoundException;
 import com.example.demo.democs.repositories.CustomerRepository;
 import com.example.demo.democs.web.dto.CustomerDto;
 import com.example.demo.democs.web.dto.CustomerSearchDto;
+import com.example.demo.democs.web.dto.DateTimeMapper;
 import com.example.demo.democs.web.dto.ProductDto;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,8 @@ import java.util.stream.Collectors;
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
+
+    private final DateTimeMapper dateTimeMapper;
 
     @Override
     public CustomerDto getCustomer(UUID uuid) {
@@ -91,13 +94,17 @@ public class CustomerServiceImpl implements CustomerService {
                 .email(customer.getEmail())
                 .id(customer.getId())
                 .ssn(customer.getSsn())
+                .createdDate(dateTimeMapper.asOffsetDateTime(customer.getCreated_at()))
+                .lastModifiedDate(dateTimeMapper.asOffsetDateTime(customer.getUpdated_at()))
                 .products(
-                        customer.getProducts().stream().map(cust -> {
+                        customer.getProducts().stream().map(product -> {
                             return ProductDto.builder()
-                                    .application_id(cust.getApplication_id())
-                                    .business_id(cust.getBusiness_id())
-                                    .cerebro_pid(cust.getCerebro_pid())
-                                    .id(cust.getId())
+                                    .application_id(product.getApplication_id())
+                                    .business_id(product.getBusiness_id())
+                                    .cerebro_pid(product.getCerebro_pid())
+                                    .id(product.getId())
+                                    .createdDate(dateTimeMapper.asOffsetDateTime(product.getCreated_at()))
+                                    .lastModifiedDate(dateTimeMapper.asOffsetDateTime(product.getUpdated_at()))
                                     .build();
                         }).collect(Collectors.toList())
                 )

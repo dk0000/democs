@@ -33,9 +33,11 @@ public class Customer {
     private String lastName;
 
     // need to add attribute converter
+    @Convert(converter = CryptoConvertor.class)
     private String ssn;
 
     // need to add attribute converter
+    @Convert(converter = CryptoConvertor.class)
     private String dob;
 
     private String email;

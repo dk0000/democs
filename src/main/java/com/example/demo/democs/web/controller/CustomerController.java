@@ -2,6 +2,7 @@ package com.example.demo.democs.web.controller;
 
 import com.example.demo.democs.services.CustomerService;
 import com.example.demo.democs.web.dto.CustomerDto;
+import com.example.demo.democs.web.dto.CustomerSearchDto;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,11 @@ public class CustomerController {
     @PostMapping("/customers/")
     public ResponseEntity createCustomer(@RequestBody CustomerDto customerDto){
         return new ResponseEntity(customerService.saveCustomer(customerDto), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/search/")
+    public ResponseEntity searchCustomer(@RequestBody CustomerSearchDto searchDto){
+        return new ResponseEntity(customerService.searchCustomer(searchDto), HttpStatus.OK);
     }
 
 
